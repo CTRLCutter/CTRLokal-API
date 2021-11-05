@@ -1,4 +1,4 @@
-package de.ctrlcutter.api.ctrlokalapi;
+package com.ctrlcutter.api.ctrlokalapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

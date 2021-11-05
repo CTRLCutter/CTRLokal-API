@@ -1,4 +1,4 @@
-package de.ctrlcutter.api.ctrlokalapi;
+package com.ctrlcutter.api.ctrlokalapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
