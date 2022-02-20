@@ -1,4 +1,4 @@
-package com.ctrlcutter.api.ctrlokalapi.keywords;
+package com.ctrlcutter.api.ctrlokalapi.constants;
 
 public enum DefaultKeywords {
 

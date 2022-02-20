@@ -1,4 +1,4 @@
-package com.ctrlcutter.api.ctrlokalapi.keys;
+package com.ctrlcutter.api.ctrlokalapi.constants;
 
 public enum ModifierKeys {
 

@@ -1,10 +1,6 @@
 package com.ctrlcutter.api.ctrlokalapi.controller;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,34 +9,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ctrlcutter.api.ctrlokalapi.dto.RunDTO;
-import com.ctrlcutter.api.ctrlokalapi.dto.SendDTO;
-import com.ctrlcutter.api.ctrlokalapi.service.RunScriptGeneratorService;
-import com.ctrlcutter.api.ctrlokalapi.service.SendScriptGeneratorService;
+import com.ctrlcutter.api.ctrlokalapi.dto.BasicScriptDTO;
+import com.ctrlcutter.api.ctrlokalapi.service.BasicScriptGeneratorService;
 
 @RestController
 @RequestMapping("/script")
 public class BasicController {
 
-    private SendScriptGeneratorService sendScriptGeneratorService;
-    private RunScriptGeneratorService runScriptGeneratorService;
+    private BasicScriptGeneratorService basicScriptGeneratorService;
 
-    public BasicController(@Autowired SendScriptGeneratorService sendScriptGeneratorService, @Autowired RunScriptGeneratorService runScriptGeneratorService) {
-        this.sendScriptGeneratorService = sendScriptGeneratorService;
-        this.runScriptGeneratorService = runScriptGeneratorService;
+    public BasicController(@Autowired BasicScriptGeneratorService basicScriptGeneratorService) {
+        this.basicScriptGeneratorService = basicScriptGeneratorService;
     }
 
-    @PostMapping(value = "/run", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<InputStreamResource> runCommand(@RequestBody RunDTO runDTO) {
-        String script = this.runScriptGeneratorService.generateRunScript(runDTO);
+    @PostMapping(value = "/basic", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> generateBasicScript(@RequestBody BasicScriptDTO basicScriptDTO) {
 
-        return new ResponseEntity<>(new InputStreamResource(new ByteArrayInputStream(script.getBytes(StandardCharsets.UTF_8))), HttpStatus.OK);
-    }
+        //possible validation for different scripts based on os basicScriptDTO.getOs()
 
-    @PostMapping(value = "/send", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<InputStreamResource> sendCommand(@RequestBody SendDTO sendDTO) {
-        String script = this.sendScriptGeneratorService.generateSendScript(sendDTO);
+        String script = this.basicScriptGeneratorService.generateBasicScript(basicScriptDTO);
 
-        return new ResponseEntity<>(new InputStreamResource(new ByteArrayInputStream(script.getBytes(StandardCharsets.UTF_8))), HttpStatus.OK);
+        if (script == null || script.isEmpty()) {
+            return new ResponseEntity<>("Something went wrong. Please try again.", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(script, HttpStatus.OK);
     }
 }

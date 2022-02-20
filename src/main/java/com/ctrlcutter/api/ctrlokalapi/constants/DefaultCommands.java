@@ -1,4 +1,4 @@
-package com.ctrlcutter.api.ctrlokalapi.commands;
+package com.ctrlcutter.api.ctrlokalapi.constants;
 
 public enum DefaultCommands {
 
