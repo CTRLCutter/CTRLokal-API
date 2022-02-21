@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ctrlcutter.api.ctrlokalapi.dto.BasicScriptDTO;
-import com.ctrlcutter.api.ctrlokalapi.service.BasicScriptGeneratorService;
-import com.ctrlcutter.api.ctrlokalapi.service.HotStringScriptGeneratorService;
+import com.ctrlcutter.backend.dto.BasicScriptDTO;
+import com.ctrlcutter.backend.service.BasicScriptGeneratorService;
+import com.ctrlcutter.backend.service.HotStringScriptGeneratorService;
 
 @RestController
 @RequestMapping("/script")
