@@ -11,15 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ctrlcutter.api.ctrlokalapi.dto.BasicScriptDTO;
 import com.ctrlcutter.api.ctrlokalapi.service.BasicScriptGeneratorService;
+import com.ctrlcutter.api.ctrlokalapi.service.HotStringScriptGeneratorService;
 
 @RestController
 @RequestMapping("/script")
 public class BasicController {
 
     private BasicScriptGeneratorService basicScriptGeneratorService;
+    private HotStringScriptGeneratorService hotStringScriptGeneratorService;
 
-    public BasicController(@Autowired BasicScriptGeneratorService basicScriptGeneratorService) {
+    public BasicController(@Autowired BasicScriptGeneratorService basicScriptGeneratorService,
+            @Autowired HotStringScriptGeneratorService hotStringScriptGeneratorService) {
         this.basicScriptGeneratorService = basicScriptGeneratorService;
+        this.hotStringScriptGeneratorService = hotStringScriptGeneratorService;
     }
 
     @PostMapping(value = "/basic", produces = MediaType.TEXT_PLAIN_VALUE)
