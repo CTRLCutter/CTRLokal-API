@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ctrlcutter.backend.dto.AnonymizedScriptDTO;
-import com.ctrlcutter.backend.dto.BasicPreDefinedDTO;
+import com.ctrlcutter.backend.dto.BasicAndPreDefinedDTO;
 import com.ctrlcutter.backend.persistence.model.BasicHotstringScript;
 import com.ctrlcutter.backend.persistence.model.BasicScript;
 import com.ctrlcutter.backend.persistence.model.PreDefinedScript;
@@ -64,16 +64,16 @@ public class PersistenceController {
     }
 
     @GetMapping(value = "/allBasicPreDefined", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BasicPreDefinedDTO> getAllBasicPreDefinedScripts() {
-        BasicPreDefinedDTO basicPreDefinedDTO = new BasicPreDefinedDTO();
-        basicPreDefinedDTO.setBasicScripts(this.persistenceReceiveService.getAllBasicScripts());
-        basicPreDefinedDTO.setPreDefinedScripts(this.persistenceReceiveService.getAllPreDefinedScripts());
+    public ResponseEntity<BasicAndPreDefinedDTO> getAllBasicPreDefinedScripts() {
+        BasicAndPreDefinedDTO basicAndPreDefinedDTO = new BasicAndPreDefinedDTO();
+        basicAndPreDefinedDTO.setBasicScripts(this.persistenceReceiveService.getAllBasicScripts());
+        basicAndPreDefinedDTO.setPreDefinedScripts(this.persistenceReceiveService.getAllPreDefinedScripts());
 
-        if (basicPreDefinedDTO.getBasicScripts().isEmpty() && basicPreDefinedDTO.getPreDefinedScripts().isEmpty()) {
-            return new ResponseEntity<>(basicPreDefinedDTO, HttpStatus.NO_CONTENT);
+        if (basicAndPreDefinedDTO.getBasicScripts().isEmpty() && basicAndPreDefinedDTO.getPreDefinedScripts().isEmpty()) {
+            return new ResponseEntity<>(basicAndPreDefinedDTO, HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(basicPreDefinedDTO, HttpStatus.OK);
+        return new ResponseEntity<>(basicAndPreDefinedDTO, HttpStatus.OK);
     }
 
     @PostMapping(value = "/backupToWeb", produces = MediaType.TEXT_PLAIN_VALUE)
