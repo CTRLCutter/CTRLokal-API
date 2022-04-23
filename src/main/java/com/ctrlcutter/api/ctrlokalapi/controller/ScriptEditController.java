@@ -44,7 +44,6 @@ public class ScriptEditController {
         }
     }
 
-    //fix bug with duplicate entrys of default script and dto
     @PutMapping(value = "/preDefinedScript", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PreDefinedScriptDTO> editPreDefinedScript(@RequestParam() int id, @RequestBody PreDefinedScriptDTO preDefinedScriptDTO) {
         boolean editSucceed = this.scriptEditService.editPreDefinedScript(id, preDefinedScriptDTO);
