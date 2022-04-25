@@ -77,14 +77,14 @@ public class PersistenceController {
     }
 
     @PostMapping(value = "/backupToWeb", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> backupScripts(@RequestHeader Map<String, String> header) {
+    public ResponseEntity<String> backupScripts(@RequestHeader Map<String, String> header, @RequestParam() boolean saveAll) {
         String sessionKey = header.get("sessionkey");
 
         if (sessionKey == null || sessionKey.isEmpty()) {
             return new ResponseEntity<>("Missing session key", HttpStatus.UNAUTHORIZED);
         }
 
-        List<AnonymizedScriptDTO> anonymizedScripts = this.persistenceSaveService.anonymizeScriptsForBackup();
+        List<AnonymizedScriptDTO> anonymizedScripts = this.persistenceSaveService.anonymizeScriptsForBackup(saveAll);
 
         if (!anonymizedScripts.isEmpty()) {
             ResponseEntity<String> response = this.persistenceSaveService.saveScriptsToWeb(sessionKey, anonymizedScripts);
