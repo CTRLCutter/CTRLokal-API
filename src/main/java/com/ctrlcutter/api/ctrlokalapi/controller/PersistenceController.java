@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -119,6 +120,21 @@ public class PersistenceController {
         this.persistenceSaveService.deleteAll();
         basicScriptDTOs.forEach(this.persistenceSaveService::saveBasicScript);
 
-        return new ResponseEntity<>("No scripts to backup", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Backup Successful!", HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping(value = "/deleteBasic")
+    public void deleteBasicScript(@RequestParam() long id) {
+        this.persistenceSaveService.deleteBasicScript(id);
+    }
+
+    @DeleteMapping(value = "/deleteHotstring")
+    public void deleteHotstring(@RequestParam() long id) {
+        this.persistenceSaveService.deleteHotstring(id);
+    }
+
+    @DeleteMapping(value = "/deletePredefined")
+    public void deletePredefined(@RequestParam() long id) {
+        this.persistenceSaveService.deletePredefinedScript(id);
     }
 }
