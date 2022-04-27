@@ -2,20 +2,29 @@ package com.ctrlcutter.api.ctrlokalapi.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ctrlcutter.backend.dto.AnonymizedScriptDTO;
 import com.ctrlcutter.backend.dto.BasicAndPreDefinedDTO;
+import com.ctrlcutter.backend.dto.BasicScriptDTO;
+import com.ctrlcutter.backend.dto.ShortcutDTO;
 import com.ctrlcutter.backend.persistence.model.BasicHotstringScript;
 import com.ctrlcutter.backend.persistence.model.BasicScript;
 import com.ctrlcutter.backend.persistence.model.PreDefinedScript;
 import com.ctrlcutter.backend.persistence.service.PersistenceReceiveService;
 import com.ctrlcutter.backend.persistence.service.PersistenceSaveService;
+import com.ctrlcutter.backend.util.ScriptToDTOMapper;
 
 @RestController
 @RequestMapping("/storage")
@@ -93,5 +102,23 @@ public class PersistenceController {
         } else {
             return new ResponseEntity<>("No scripts to backup", HttpStatus.NO_CONTENT);
         }
+    }
+
+    @PostMapping(value = "/retrieveFromWeb", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> retrieveScripts(@RequestHeader Map<String, String> header) {
+        String sessionKey = header.get("sessionkey");
+
+        if (sessionKey == null || sessionKey.isEmpty()) {
+            return new ResponseEntity<>("Missing session key", HttpStatus.UNAUTHORIZED);
+        }
+
+        List<ShortcutDTO> anonymizedScripts = this.persistenceSaveService.retrieveScriptsFromWeb(sessionKey);
+        ScriptToDTOMapper scriptToDTOMapper = new ScriptToDTOMapper();
+        List<BasicScriptDTO> basicScriptDTOs = anonymizedScripts.stream().map(scriptToDTOMapper::mapBasicScriptDTO).collect(Collectors.toList());
+
+        this.persistenceSaveService.deleteAll();
+        basicScriptDTOs.forEach(this.persistenceSaveService::saveBasicScript);
+
+        return new ResponseEntity<>("No scripts to backup", HttpStatus.NO_CONTENT);
     }
 }
